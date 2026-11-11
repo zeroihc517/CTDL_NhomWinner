@@ -254,7 +254,7 @@ void QuanLyThuVien::themSach() {
     cout << "  " << char(201) << string(52, char(205)) << char(187) << "\n";
     cout << "  " << char(186);
     setColor(COLOR_TIEU_DE);
-    cout << left << setw(52) << " THONG TIN SACH VUA NHAP";
+    cout << canGiua("THONG TIN SACH VUA NHAP", 52);
     setColor(COLOR_VIEN);
     cout << char(186) << "\n";
     cout << "  " << char(204) << string(15, char(205)) << char(203) << string(36, char(205)) << char(185) << "\n";
@@ -405,7 +405,7 @@ void QuanLyThuVien::muonSach(){
     cout << "  " << char(201) << string(52, char(205)) << char(187) << "\n";
     cout << "  " << char(186);
     setColor(COLOR_TIEU_DE);
-    cout << left << setw(52) << " THONG TIN PHIEU MUON VUA TAO";
+    cout << canGiua("THONG TIN PHIEU MUON VUA TAO", 52);
     setColor(COLOR_VIEN);
     cout << char(186) << "\n";
     cout << "  " << char(204) << string(15, char(205)) << char(203) << string(36, char(205)) << char(185) << "\n";
