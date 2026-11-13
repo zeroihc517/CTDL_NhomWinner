@@ -25,7 +25,7 @@ void setColor(const int iColor) {
 }
 void chayWinner(const string& strText, const int iColor, const int iDelay = 5) {
     setColor(iColor);
-    for (size_t i = 0; i < strText.length(); ++i) {
+    for (int i = 0; i < strText.length(); ++i) {
         cout << strText[i];
         Sleep(iDelay);
     }
