@@ -299,7 +299,7 @@ void QuanLyThuVien::hienThiPhieuMuon() {
         chayWinner("\n  [!] Chua co phieu muon nao trong he thong!\n", COLOR_LOI);
         return;
     }
-    string headers[6] = {"So Phieu", "Ban Doc", "Ma Sach", "Ngay Muon", "Ngay Tra", "Tinh Trang"};
+    string headers[6] = {"So Phieu", "Ban Doc", "Ma - Ten Sach", "Ngay Muon", "Ngay Tra", "Tinh Trang"};
     int colPercents[6] = {10, 15, 25, 12, 16, 0};
     LinkedList<string> flatData;
     LinkedList<int> flatColors;
@@ -315,9 +315,18 @@ void QuanLyThuVien::hienThiPhieuMuon() {
             }
         }
         string strHienThiBD = strMaBD + (strTenBD != "" ? " - " + strTenBD : "");
+        string strMaSach = objPhieu.getMaSach();
+        string strTenSach = "";
+        for (int k = 0; k < this->_vecSach.getSize(); k++) {
+            if (this->_vecSach[k].getMaSach() == strMaSach) {
+                strTenSach = this->_vecSach[k].getTenSach();
+                break;
+            }
+        }
+        string strHienThiSach = strMaSach + (strTenSach != "" ? " - " + strTenSach : "");
         flatData.addTail(toStr(objPhieu.getSoPhieu())); flatColors.addTail(COLOR_TEXT);
         flatData.addTail(strHienThiBD);                 flatColors.addTail(COLOR_TEXT);
-        flatData.addTail(objPhieu.getMaSach());         flatColors.addTail(COLOR_TEXT);
+        flatData.addTail(strHienThiSach);               flatColors.addTail(COLOR_TEXT);
         flatData.addTail(objPhieu.getNgayMuon());       flatColors.addTail(COLOR_TEXT);
         flatData.addTail(objPhieu.getNgayTra());        flatColors.addTail(COLOR_TEXT);
         flatData.addTail(strTinhTrang);
