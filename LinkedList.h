@@ -30,7 +30,7 @@ Node<DataType>::Node(DataType data){
 * @Description In ra man hinh gia tri _data cua Node hien tai
 *
 * @return       Void
-* @attention    Can nap chong (overload) toan tu << cho DataType neu do la class/struct
+* @attention    Can nap chong (overload) toan tu << cho DataType neu do la class
 *********************/
 template <class DataType>
 void Node<DataType>::display(){
@@ -69,7 +69,7 @@ LinkedList<DataType>::LinkedList(){
 * @Description Destructor don dep vung nho khi huy danh sach lien ket
 *
 * @return       Khong co
-* @attention    Tu dong goi ham clear() de tranh memory leak (Quy tac 17)
+* @attention    Tu dong goi ham clear() de tranh memory leak
 *********************/
 template <class DataType>
 LinkedList<DataType>::~LinkedList(){
@@ -131,7 +131,7 @@ DataType& LinkedList<DataType>::operator[](int index){
 * @Description Xoa mot phan tu tai vi tri index chi dinh
 *
 * @return       Void
-* @attention    Can delete vung nho de tranh memory leak (Quy tac 17)
+* @attention    Can delete vung nho de tranh memory leak
 *********************/
 template <class DataType>
 void LinkedList<DataType>::erase(int index){
