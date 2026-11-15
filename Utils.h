@@ -49,27 +49,27 @@ void chayWinner(const string& strText, const int iColor, const int iDelay = 5) {
 * @attention    Tham chieu strText se luu tru chuoi vua nhap
 * @attention    Thoat ngang chuong trinh neu nhan ESC (ma ASCII 27)
 *********************/
-void nhapChuoi(string& str) {
-    str = "";
-    char c;
+void nhapChuoi(string& strText) {
+    strText = "";
+    char cCh;
     while (true) {
-        c = _getch();
-        if (c == 27) {
+        cCh = _getch();
+        if (cCh == 27) {
             chayWinner("\n\n  [!] Ban vua nhan ESC. He thong dang thoat...\n", COLOR_LOI, 10);
             exit(0);
         }
-        if (c == 13) {
+        if (cCh == 13) {
             cout << endl;
             break;
         }
-        if (c == 8) {
-            if (str.length() > 0) {
+        if (cCh == 8) {
+            if (strText.length() > 0) {
                 cout << "\b \b";
-                str.erase(str.length() - 1);
+                strText.erase(strText.length() - 1);
             }
-        } else if (c >= 32 && c <= 126) {
-            str += c;
-            cout << c;
+        } else if (cCh >= 32 && cCh <= 126) {
+            strText += cCh;
+            cout << cCh;
         }
     }
 }
@@ -229,29 +229,29 @@ bool dangNhap() {
 * @return       Void
 * @attention    Tu dong tinh toan can giua de ve khung vien menu
 *********************/
-void veMenu(const string& strTitle, LinkedList<string>& vecOptions) {
+void veMenu(const string& strTitle, LinkedList<string>& listOptions) {
     system("cls");
     setColor(COLOR_VIEN);
     cout << "\n  " << char(201) << string(44, char(205)) << char(187) << "\n";
     cout << "  " << char(186);
     setColor(COLOR_TIEU_DE);
-    int iPadL = (44 - strTitle.length()) / 2;
-    int iPadR = 44 - strTitle.length() - iPadL;
+    int iPadL = (44 - (int)strTitle.length()) / 2;
+    int iPadR = 44 - (int)strTitle.length() - iPadL;
     cout << string(iPadL, ' ') << strTitle << string(iPadR, ' ');
     setColor(COLOR_VIEN);
     cout << char(186) << "\n";
     cout << "  " << char(204) << string(44, char(205)) << char(185) << "\n";
-    for (int i = 0; i < vecOptions.getSize(); ++i) {
+    for (int i = 0; i < listOptions.getSize(); ++i) {
         setColor(COLOR_VIEN);
         cout << "  " << char(186) << " ";
-        if (i == vecOptions.getSize() - 1) {
+        if (i == listOptions.getSize() - 1) {
             setColor(COLOR_LOI);
         } else {
             setColor(COLOR_TIEU_DE);
         }
         cout << i + 1 << ". ";
         setColor(COLOR_TEXT);
-        cout << left << setw(40) << vecOptions[i];
+        cout << left << setw(40) << listOptions[i];
         setColor(COLOR_VIEN);
         cout << char(186) << "\n";
     }
