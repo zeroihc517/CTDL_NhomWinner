@@ -336,16 +336,16 @@ void QuanLyThuVien::themSach() {
     setColor(COLOR_VIEN);
     cout << char(186) << "\n";
     cout << "  " << char(204) << string(15, char(205)) << char(203) << string(36, char(205)) << char(185) << "\n";
-    string props[7] = {"Ma sach", "Ten sach", "Tac gia", "Nha xuat ban", "Gia ban", "Nam Phat Hanh", "So trang"};
-    string vals[7] = {objSach.getMaSach(), objSach.getTenSach(), objSach.getTacGia(), objSach.getNxb(), toStr(objSach.getGiaBan()), toStr(objSach.getNamPhatHanh()), toStr(objSach.getSoTrang())};
+    string strprops[7] = {"Ma sach", "Ten sach", "Tac gia", "Nha xuat ban", "Gia ban", "Nam Phat Hanh", "So trang"};
+    string strvals[7] = {objSach.getMaSach(), objSach.getTenSach(), objSach.getTacGia(), objSach.getNxb(), toStr(objSach.getGiaBan()), toStr(objSach.getNamPhatHanh()), toStr(objSach.getSoTrang())};
     for (int i = 0; i < 7; i++) {
         cout << "  " << char(186);
         setColor(COLOR_TEXT);
-        cout << " " << left << setw(14) << props[i];
+        cout << " " << left << setw(14) << strprops[i];
         setColor(COLOR_VIEN);
         cout << char(186);
         setColor(COLOR_CHON);
-        cout << " " << left << setw(35) << (vals[i].length() > 35 ? vals[i].substr(0,35) : vals[i]);
+        cout << " " << left << setw(35) << (strvals[i].length() > 35 ? strvals[i].substr(0,35) : strvals[i]);
         setColor(COLOR_VIEN);
         cout << char(186) << "\n";
     }
