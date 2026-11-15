@@ -233,7 +233,7 @@ void QuanLyThuVien::hienThiSach() {
         chayWinner("\n [!] Kho sach hien dang trong! \n", COLOR_LOI);
         return; 
     }
-    string headers[9] = {"Ma Sach", "Ten Sach", "Tac Gia", "Nha Xuat Ban", "Gia Ban", "Phat Hanh", "So Trang", "Ngay Nhap Kho", "Tinh Trang"};
+    string strheaders[9] = {"Ma Sach", "Ten Sach", "Tac Gia", "Nha Xuat Ban", "Gia Ban", "Phat Hanh", "So Trang", "Ngay Nhap Kho", "Tinh Trang"};
     int icolPercents[9] = {7, 18, 15, 15, 8, 8, 7, 12, 0};
     LinkedList<string> flatData;
     LinkedList<int> flatColors;
@@ -252,7 +252,7 @@ void QuanLyThuVien::hienThiSach() {
         if (objSach.getTinhTrang() == 0) flatColors.addTail(COLOR_CHON);
         else flatColors.addTail(COLOR_LOI);
     }
-    veBangConsole(9, headers, icolPercents, flatData, flatColors);
+    veBangConsole(9, strheaders, icolPercents, flatData, flatColors);
 }
 /************
 * @Description Them mot quyen sach moi vao he thong thu vien
