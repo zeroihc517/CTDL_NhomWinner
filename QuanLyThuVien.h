@@ -390,8 +390,8 @@ void QuanLyThuVien::hienThiPhieuMuon() {
         chayWinner("\n  [!] Chua co phieu muon nao trong he thong!\n", COLOR_LOI);
         return;
     }
-    string headers[6] = {"So Phieu", "Ban Doc", "Ma - Ten Sach", "Ngay Muon", "Ngay Tra", "Tinh Trang"};
-    int colPercents[6] = {10, 15, 25, 12, 16, 0};
+    string strheaders[6] = {"So Phieu", "Ban Doc", "Ma - Ten Sach", "Ngay Muon", "Ngay Tra", "Tinh Trang"};
+    int icolPercents[6] = {10, 15, 25, 12, 16, 0};
     LinkedList<string> flatData;
     LinkedList<int> flatColors;
     for (int i = 0; i < this->_vecPhieu.getSize(); i++) {
@@ -424,7 +424,7 @@ void QuanLyThuVien::hienThiPhieuMuon() {
         if (objPhieu.getTinhTrang() == 1) flatColors.addTail(COLOR_LOI);
         else flatColors.addTail(COLOR_CHON);
     }
-    veBangConsole(6, headers, colPercents, flatData, flatColors);
+    veBangConsole(6, strheaders, icolPercents, flatData, flatColors);
 }
 /************
 * @Description Tao phieu muon sach cho ban doc
@@ -523,16 +523,16 @@ void QuanLyThuVien::muonSach(){
             break;
         }
     }
-    string propsPM[5] = {"So phieu", "Ban doc", "Ma sach", "Ngay muon", "Ngay tra"};
-    string valsPM[5] = {toStr(objPhieu.getSoPhieu()), strMaBD + " - " + strTenBanDoc, objPhieu.getMaSach(), objPhieu.getNgayMuon(), objPhieu.getNgayTra()};
+    string strpropsPM[5] = {"So phieu", "Ban doc", "Ma sach", "Ngay muon", "Ngay tra"};
+    string strvalsPM[5] = {toStr(objPhieu.getSoPhieu()), strMaBD + " - " + strTenBanDoc, objPhieu.getMaSach(), objPhieu.getNgayMuon(), objPhieu.getNgayTra()};
     for (int i = 0; i < 5; i++) {
         cout << "  " << char(186);
         setColor(COLOR_TEXT);
-        cout << " " << left << setw(14) << propsPM[i];
+        cout << " " << left << setw(14) << strpropsPM[i];
         setColor(COLOR_VIEN);
         cout << char(186);
         setColor(COLOR_CHON);
-        cout << " " << left << setw(35) << (valsPM[i].length() > 35 ? valsPM[i].substr(0,35) : valsPM[i]);
+        cout << " " << left << setw(35) << (strvalsPM[i].length() > 35 ? strvalsPM[i].substr(0,35) : strvalsPM[i]);
         setColor(COLOR_VIEN);
         cout << char(186) << "\n";
     }
