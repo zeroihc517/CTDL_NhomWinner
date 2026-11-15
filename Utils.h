@@ -20,9 +20,21 @@ const int COLOR_TEXT = 15;
 const int COLOR_CHON = 10;    
 const int COLOR_LOI = 12;
 const int WIDTH_FRAME = 116;
+/************
+* @Description Thay doi mau sac cua text tren console
+*
+* @return       Void
+* @attention    Chi ap dung cho he dieu hanh Windows (dung <windows.h>)
+*********************/
 void setColor(const int iColor) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), iColor);
 }
+/************
+* @Description Hien thi text voi hieu ung danh may (delay)
+*
+* @return       Void
+* @attention    iDelay mac dinh la 5ms de tao hieu ung muot ma
+*********************/
 void chayWinner(const string& strText, const int iColor, const int iDelay = 5) {
     setColor(iColor);
     for (int i = 0; i < strText.length(); ++i) {
@@ -30,6 +42,13 @@ void chayWinner(const string& strText, const int iColor, const int iDelay = 5) {
         Sleep(iDelay);
     }
 }
+/************
+* @Description Nhap chuoi tu ban phim, ho tro bat phim ESC de thoat hoac xoa ky tu
+*
+* @return       Void
+* @attention    Tham chieu strText se luu tru chuoi vua nhap
+* @attention    Thoat ngang chuong trinh neu nhan ESC (ma ASCII 27)
+*********************/
 void nhapChuoi(string& str) {
     str = "";
     char c;
@@ -54,12 +73,24 @@ void nhapChuoi(string& str) {
         }
     }
 }
+/************
+* @Description Chuyen doi gia tri tu kieu bat ky (T) sang kieu chuoi (string)
+*
+* @return       Chuoi string tuong ung voi gia tri dau vao
+* @attention    Su dung ostringstream de ep kieu an toan
+*********************/
 template <typename T>
 string toStr(const T tValue) {
     ostringstream os;
     os << tValue;
     return os.str();
 }
+/************
+* @Description Lay ngay gio hien tai cua he thong theo format "HH:MM DD/MM/YYYY"
+*
+* @return       Chuoi string chua ngay gio hien tai
+* @attention    Dung thu vien <ctime>
+*********************/
 string getNgayHienTai() {
     time_t tNow = time(0);
     tm* pLtm = localtime(&tNow);
@@ -67,6 +98,12 @@ string getNgayHienTai() {
     sprintf(szBuf, "%02d:%02d %02d/%02d/%04d", pLtm->tm_hour, pLtm->tm_min, pLtm->tm_mday, 1 + pLtm->tm_mon, 1900 + pLtm->tm_year);
     return string(szBuf);
 }
+/************
+* @Description Lay ngay tra sach (Cong them 7 ngay tu ngay hien tai)
+*
+* @return       Chuoi string chua ngay tra (format "DD/MM/YYYY")
+* @attention    Mac dinh quy dinh muon sach la 7 ngay
+*********************/
 string getNgayTra() {
     time_t tNow = time(0) + (7 * 24 * 60 * 60); 
     tm* pLtm = localtime(&tNow);
@@ -74,31 +111,49 @@ string getNgayTra() {
     sprintf(szBuf, "%02d/%02d/%04d", pLtm->tm_mday, 1 + pLtm->tm_mon, 1900 + pLtm->tm_year);
     return string(szBuf);
 }
-string canGiua(const string& str, int width) {
-    if ((int)str.length() >= width) return str.substr(0, width);
-    int padLeft = (width - (int)str.length()) / 2;
-    int padRight = width - (int)str.length() - padLeft;
-    return string(padLeft, ' ') + str + string(padRight, ' ');
+/************
+* @Description Can giua mot chuoi text trong mot khoang chieu rong cho truoc
+*
+* @return       Chuoi text sau khi da duoc padding khoang trang 2 ben
+* @attention    Neu chieu rong nho hon do dai chuoi, chuoi se bi cat but
+*********************/
+string canGiua(const string& strText, int iWidth) {
+    if ((int)strText.length() >= iWidth) return strText.substr(0, iWidth);
+    int iPadLeft = (iWidth - (int)strText.length()) / 2;
+    int iPadRight = iWidth - (int)strText.length() - iPadLeft;
+    return string(iPadLeft, ' ') + strText + string(iPadRight, ' ');
 }
-void wrapText(string text, int width, LinkedList<string>& result) {
-    result.clear();
-    if (width <= 0) width = 1;
-    while (text.length() > (size_t)width) {
-        size_t pos = text.rfind(' ', width);
-        if (pos == string::npos || pos == 0) {
-            pos = width;
+/************
+* @Description Tu dong ngat dong (word wrap) cho mot doan text dai
+*
+* @return       Void (ket qua luu vao listResult)
+* @attention    Dam bao khong ngat nua chung giua 1 tu neu khong can thiet
+*********************/
+void wrapText(string strText, int iWidth, LinkedList<string>& listResult) {
+    listResult.clear();
+    if (iWidth <= 0) iWidth = 1;
+    while (strText.length() > (size_t)iWidth) {
+        size_t iPos = strText.rfind(' ', iWidth);
+        if (iPos == string::npos || iPos == 0) {
+            iPos = iWidth;
         }
-        result.addTail(text.substr(0, pos));
-        if (pos < text.length() && text[pos] == ' ') {
-            text = text.substr(pos + 1);
+        listResult.addTail(strText.substr(0, iPos));
+        if (iPos < strText.length() && strText[iPos] == ' ') {
+            strText = strText.substr(iPos + 1);
         } else {
-            text = text.substr(pos);
+            strText = strText.substr(iPos);
         }
     }
-    if (text.length() > 0 || result.getSize() == 0) {
-        result.addTail(text);
+    if (strText.length() > 0 || listResult.getSize() == 0) {
+        listResult.addTail(strText);
     }
 }
+/************
+* @Description Tach mot chuoi thanh nhieu chuoi con dua tren ky tu phan cach
+*
+* @return       Danh sach lien ket (LinkedList) chua cac chuoi con
+* @attention    Su dung stringstream de tach chuoi
+*********************/
 LinkedList<string> split(const string& strInput, const char cDelim) {
     LinkedList<string> listTokens;
     stringstream ss(strInput);
@@ -108,6 +163,12 @@ LinkedList<string> split(const string& strInput, const char cDelim) {
     }
     return listTokens;
 }
+/************
+* @Description Kiem tra dang nhap tai khoan quan tri admin
+*
+* @return       True neu dang nhap thanh cong, False neu that bai
+* @attention    Tai khoan doc tu file Admin.txt, nhap sai qua 3 lan se thoat
+*********************/
 bool dangNhap() {
     ifstream fAdmin("Admin.txt");
     string strDbUser = "";
@@ -162,6 +223,12 @@ bool dangNhap() {
     }
     return false;
 }
+/************
+* @Description Ve menu lua chon chuc nang ra man hinh console
+*
+* @return       Void
+* @attention    Tu dong tinh toan can giua de ve khung vien menu
+*********************/
 void veMenu(const string& strTitle, LinkedList<string>& vecOptions) {
     system("cls");
     setColor(COLOR_VIEN);
@@ -192,49 +259,55 @@ void veMenu(const string& strTitle, LinkedList<string>& vecOptions) {
     chayWinner("  >> Nhap lua chon: ", COLOR_TIEU_DE, 0);
     setColor(COLOR_TEXT);
 }
-void veBangConsole(int numCols, string headers[], int colPercents[], LinkedList<string>& flatData, LinkedList<int>& flatColors) {
+/************
+* @Description Ve bang console linh hoat ho tro word-wrap tu dong
+*
+* @return       Void
+* @attention    Kich thuoc bang tu thich ung voi do rong cua man hinh console hien tai
+*********************/
+void veBangConsole(int iNumCols, string arrHeaders[], int arrColPercents[], LinkedList<string>& listFlatData, LinkedList<int>& listFlatColors) {
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-    int consoleWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
-    int W = consoleWidth - 14; 
-    if (W < 80) W = 80; 
-    int* col = new int[numCols];
-    int sumUsed = 0;
-    for (int i = 0; i < numCols - 1; i++) {
-        col[i] = W * colPercents[i] / 100;
-        if (col[i] < 4) col[i] = 4;
-        sumUsed += col[i];
+    int iConsoleWidth = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+    int iWidth = iConsoleWidth - 14; 
+    if (iWidth < 80) iWidth = 80; 
+    int* pArrCol = new int[iNumCols];
+    int iSumUsed = 0;
+    for (int i = 0; i < iNumCols - 1; i++) {
+        pArrCol[i] = iWidth * arrColPercents[i] / 100;
+        if (pArrCol[i] < 4) pArrCol[i] = 4;
+        iSumUsed += pArrCol[i];
     }
-    col[numCols - 1] = W - sumUsed;
-    if (col[numCols - 1] < 4) col[numCols - 1] = 4;
+    pArrCol[iNumCols - 1] = iWidth - iSumUsed;
+    if (pArrCol[iNumCols - 1] < 4) pArrCol[iNumCols - 1] = 4;
     setColor(COLOR_VIEN); 
     cout << "\n  " << char(201);
-    for (int i = 0; i < numCols; i++) {
-        cout << string(col[i], char(205));
-        if (i < numCols - 1) cout << char(203);
+    for (int i = 0; i < iNumCols; i++) {
+        cout << string(pArrCol[i], char(205));
+        if (i < iNumCols - 1) cout << char(203);
     }
     cout << char(187) << "\n";
-    LinkedList<string>* headerData = new LinkedList<string>[numCols];
-    int maxHeaderLines = 1;
-    for (int i = 0; i < numCols; i++) {
-        wrapText(headers[i], col[i] - 2, headerData[i]); 
-        if (headerData[i].getSize() > maxHeaderLines) maxHeaderLines = headerData[i].getSize();
+    LinkedList<string>* pArrHeaderData = new LinkedList<string>[iNumCols];
+    int iMaxHeaderLines = 1;
+    for (int i = 0; i < iNumCols; i++) {
+        wrapText(arrHeaders[i], pArrCol[i] - 2, pArrHeaderData[i]); 
+        if (pArrHeaderData[i].getSize() > iMaxHeaderLines) iMaxHeaderLines = pArrHeaderData[i].getSize();
     }
-    for (int line = 0; line < maxHeaderLines; ++line) {
+    for (int iLine = 0; iLine < iMaxHeaderLines; ++iLine) {
         setColor(COLOR_VIEN);
         cout << "  " << char(186); 
-        for (int j = 0; j < numCols; ++j) {
-            int numLines = headerData[j].getSize();
-            int startLine = (maxHeaderLines - numLines) / 2; 
+        for (int j = 0; j < iNumCols; ++j) {
+            int iNumLines = pArrHeaderData[j].getSize();
+            int iStartLine = (iMaxHeaderLines - iNumLines) / 2; 
             setColor(COLOR_TIEU_DE);
-            if (line >= startLine && line < startLine + numLines) {
-                string text = headerData[j][line - startLine];
-                size_t first = text.find_first_not_of(' ');
-                if (first != string::npos) text = text.substr(first, text.find_last_not_of(' ') - first + 1);
-                else text = "";
-                cout << canGiua(text, col[j]); 
+            if (iLine >= iStartLine && iLine < iStartLine + iNumLines) {
+                string strText = pArrHeaderData[j][iLine - iStartLine];
+                size_t iFirst = strText.find_first_not_of(' ');
+                if (iFirst != string::npos) strText = strText.substr(iFirst, strText.find_last_not_of(' ') - iFirst + 1);
+                else strText = "";
+                cout << canGiua(strText, pArrCol[j]); 
             } else {
-                cout << string(col[j], ' '); 
+                cout << string(pArrCol[j], ' '); 
             }
             setColor(COLOR_VIEN);
             cout << char(186); 
@@ -242,60 +315,60 @@ void veBangConsole(int numCols, string headers[], int colPercents[], LinkedList<
         cout << "\n";
     }
     cout << "  " << char(204);
-    for (int i = 0; i < numCols; i++) {
-        cout << string(col[i], char(205));
-        if (i < numCols - 1) cout << char(206);
+    for (int i = 0; i < iNumCols; i++) {
+        cout << string(pArrCol[i], char(205));
+        if (i < iNumCols - 1) cout << char(206);
     }
     cout << char(185) << "\n";
-    int numRows = flatData.getSize() / numCols;
-    for (int i = 0; i < numRows; ++i) {
-        LinkedList<string>* data = new LinkedList<string>[numCols];
-        int maxLines = 1;
-        for (int j = 0; j < numCols; ++j) {
-            wrapText(flatData[i * numCols + j], col[j] - 2, data[j]);
-            if (data[j].getSize() > maxLines) maxLines = data[j].getSize();
+    int iNumRows = listFlatData.getSize() / iNumCols;
+    for (int i = 0; i < iNumRows; ++i) {
+        LinkedList<string>* pArrData = new LinkedList<string>[iNumCols];
+        int iMaxLines = 1;
+        for (int j = 0; j < iNumCols; ++j) {
+            wrapText(listFlatData[i * iNumCols + j], pArrCol[j] - 2, pArrData[j]);
+            if (pArrData[j].getSize() > iMaxLines) iMaxLines = pArrData[j].getSize();
         }
-        for (int line = 0; line < maxLines; ++line) {
+        for (int iLine = 0; iLine < iMaxLines; ++iLine) {
             setColor(COLOR_VIEN); 
             cout << "  " << char(186);
-            for (int j = 0; j < numCols; ++j) {
-                int numLines = data[j].getSize();
-                setColor(flatColors[i * numCols + j]); 
-                if (line < numLines) {
-                    string text = data[j][line];
-                    size_t first = text.find_first_not_of(' ');
-                    if (first != string::npos) text = text.substr(first, text.find_last_not_of(' ') - first + 1);
-                    else text = "";
-                    text = " " + text;
-                    if (text.length() > (size_t)col[j]) text = text.substr(0, col[j]);
-                    cout << left << setw(col[j]) << text;
+            for (int j = 0; j < iNumCols; ++j) {
+                int iNumLines = pArrData[j].getSize();
+                setColor(listFlatColors[i * iNumCols + j]); 
+                if (iLine < iNumLines) {
+                    string strText = pArrData[j][iLine];
+                    size_t iFirst = strText.find_first_not_of(' ');
+                    if (iFirst != string::npos) strText = strText.substr(iFirst, strText.find_last_not_of(' ') - iFirst + 1);
+                    else strText = "";
+                    strText = " " + strText;
+                    if (strText.length() > (size_t)pArrCol[j]) strText = strText.substr(0, pArrCol[j]);
+                    cout << left << setw(pArrCol[j]) << strText;
                 } else {
-                    cout << string(col[j], ' '); 
+                    cout << string(pArrCol[j], ' '); 
                 }
                 setColor(COLOR_VIEN); 
                 cout << char(186);
             }
             cout << "\n";
         }
-        if (i < numRows - 1) {
+        if (i < iNumRows - 1) {
             cout << "  " << char(204);
-            for (int k = 0; k < numCols; k++) {
-                cout << string(col[k], char(205));
-                if (k < numCols - 1) cout << char(206);
+            for (int k = 0; k < iNumCols; k++) {
+                cout << string(pArrCol[k], char(205));
+                if (k < iNumCols - 1) cout << char(206);
             }
             cout << char(185) << "\n";
         }
-        delete[] data;
+        delete[] pArrData;
     }
     setColor(COLOR_VIEN);
     cout << "  " << char(200);
-    for (int i = 0; i < numCols; i++) {
-        cout << string(col[i], char(205));
-        if (i < numCols - 1) cout << char(202);
+    for (int i = 0; i < iNumCols; i++) {
+        cout << string(pArrCol[i], char(205));
+        if (i < iNumCols - 1) cout << char(202);
     }
     cout << char(188) << "\n";
-    delete[] headerData;
-    delete[] col;
+    delete[] pArrHeaderData;
+    delete[] pArrCol;
 }
 
 #endif

@@ -36,6 +36,12 @@ QuanLyThuVien::QuanLyThuVien() {
     this->docFileBanDoc();
     this->docFilePhieuMuon();
 }
+/************
+* @Description Khoi tao cac file du lieu txt rong neu he thong chua co
+*
+* @return       Void
+* @attention    Khong ghi de file neu file da ton tai va co du lieu
+*********************/
 void QuanLyThuVien::khoiTaoDuLieuMau() {
     ifstream kiemTraAdmin("Admin.txt");
     if (!kiemTraAdmin) {
@@ -65,6 +71,12 @@ void QuanLyThuVien::khoiTaoDuLieuMau() {
     }
     kiemTraPhieu.close();
 }
+/************
+* @Description Doc toan bo du lieu sach tu file Sach.txt vao danh sach
+*
+* @return       Void
+* @attention    Tu dong xoa du lieu cu trong _vecSach truoc khi doc lai
+*********************/
 void QuanLyThuVien::docFileSach() {
     _vecSach.clear();
     ifstream fileSach("Sach.txt");
@@ -97,6 +109,12 @@ void QuanLyThuVien::docFileSach() {
     }
     fileSach.close();
 }
+/************
+* @Description Ghi toan bo du lieu sach tu danh sach ra file Sach.txt
+*
+* @return       Void
+* @attention    Mo file o che do mac dinh (ios::out) de ghi de du lieu moi nhat
+*********************/
 void QuanLyThuVien::ghiFileSach() {
     ofstream fileSach("Sach.txt");
     if (!fileSach) return;
@@ -113,6 +131,12 @@ void QuanLyThuVien::ghiFileSach() {
     }
     fileSach.close();
 }
+/************
+* @Description Doc toan bo du lieu ban doc tu file BanDoc.txt vao danh sach
+*
+* @return       Void
+* @attention    Dau phan cach giua cac truong la dau pipe '|'
+*********************/
 void QuanLyThuVien::docFileBanDoc() {
     _vecBD.clear();
     ifstream fileBanDoc("BanDoc.txt");
@@ -131,6 +155,28 @@ void QuanLyThuVien::docFileBanDoc() {
     }
     fileBanDoc.close();
 }
+/************
+* @Description Ghi toan bo du lieu ban doc tu danh sach ra file BanDoc.txt
+*
+* @return       Void
+* @attention    Ghi de toan bo danh sach de cap nhat thay doi
+*********************/
+void QuanLyThuVien::ghiFileBanDoc() {
+    ofstream fileBanDoc("BanDoc.txt");
+    if (!fileBanDoc) return;
+    for (int i = 0; i < _vecBD.getSize(); ++i) {
+        fileBanDoc << _vecBD[i].getMaBD() << "|"
+                   << _vecBD[i].getHoTen() << "|"
+                   << _vecBD[i].getNgayDK() << endl;
+    }
+    fileBanDoc.close();
+}
+/************
+* @Description Doc toan bo phieu muon tu file PhieuMuon.txt vao danh sach
+*
+* @return       Void
+* @attention    Tach cac truong bang dau '|' va tu dong ep kieu so
+*********************/
 void QuanLyThuVien::docFilePhieuMuon() {
     _vecPhieu.clear();
     ifstream filePhieuMuon("PhieuMuon.txt");
@@ -156,6 +202,12 @@ void QuanLyThuVien::docFilePhieuMuon() {
     }
     filePhieuMuon.close();
 }
+/************
+* @Description Ghi toan bo du lieu phieu muon tu danh sach ra file PhieuMuon.txt
+*
+* @return       Void
+* @attention    Dong file an toan sau khi ghi
+*********************/
 void QuanLyThuVien::ghiFilePhieuMuon() {
     ofstream filePhieuMuon("PhieuMuon.txt");
     for (int i = 0; i < _vecPhieu.getSize(); ++i) {
@@ -169,6 +221,13 @@ void QuanLyThuVien::ghiFilePhieuMuon() {
     }
     filePhieuMuon.close();
 }
+/************
+* @Description Hien thi thong tin toan bo sach dang co trong thu vien
+*
+* @return       Void
+* @attention    Su dung ham veBangConsole() de tu dong ke bang
+* @attention    Bao loi neu kho sach trong
+*********************/
 void QuanLyThuVien::hienThiSach() {
     if (this->_vecSach.empty()) { 
         chayWinner("\n [!] Kho sach hien dang trong! \n", COLOR_LOI);
@@ -195,6 +254,13 @@ void QuanLyThuVien::hienThiSach() {
     }
     veBangConsole(9, headers, colPercents, flatData, flatColors);
 }
+/************
+* @Description Them mot quyen sach moi vao he thong thu vien
+*
+* @return       Void
+* @attention    Check trung ma sach truoc khi them
+* @attention    Su dung che do ghi noi (ios::app) vao cuoi file Sach.txt
+*********************/
 void QuanLyThuVien::themSach() {
     string strTemp = ""; 
     double dTemp = 0.0; 
@@ -248,7 +314,19 @@ void QuanLyThuVien::themSach() {
     objSach.setNgayNhapKho(getNgayHienTai());
     objSach.setTinhTrang(0); 
     this->_vecSach.addTail(objSach);
-    this->ghiFileSach(); 
+    ofstream fileSach("Sach.txt", ios::app);
+    if (fileSach) {
+        fileSach << objSach.getMaSach() << "|"
+                 << objSach.getTenSach() << "|"
+                 << objSach.getTacGia() << "|"
+                 << objSach.getNxb() << "|"
+                 << objSach.getGiaBan() << "|"
+                 << objSach.getNamPhatHanh() << "|"
+                 << objSach.getSoTrang() << "|"
+                 << objSach.getNgayNhapKho() << "|"
+                 << objSach.getTinhTrang() << endl;
+        fileSach.close();
+    }
     chayWinner("\n  => Them sach vao he thong thanh cong!\n", COLOR_CHON);
     setColor(COLOR_VIEN);
     cout << "  " << char(201) << string(52, char(205)) << char(187) << "\n";
@@ -273,6 +351,13 @@ void QuanLyThuVien::themSach() {
     }
     cout << "  " << char(200) << string(15, char(205)) << char(202) << string(36, char(205)) << char(188) << "\n";
 }
+/************
+* @Description Xoa mot quyen sach khoi he thong dua tren ma sach
+*
+* @return       Void
+* @attention    Chi cho phep xoa khi tinh trang sach = 0 (khong co ai muon)
+* @attention    Ghi de lai toan bo file sau khi xoa thanh cong
+*********************/
 void QuanLyThuVien::xoaSach() {
     string strMaXoa = "";
     setColor(COLOR_VIEN); 
@@ -294,6 +379,12 @@ void QuanLyThuVien::xoaSach() {
     }
     chayWinner("  [!] Khong tim thay Ma sach trong he thong!\n", COLOR_LOI);
 }
+/************
+* @Description Hien thi thong tin toan bo phieu muon trong thu vien
+*
+* @return       Void
+* @attention    Mau do cho phieu dang muon, mau xanh cho phieu da tra
+*********************/
 void QuanLyThuVien::hienThiPhieuMuon() {
     if (this->_vecPhieu.empty()) {
         chayWinner("\n  [!] Chua co phieu muon nao trong he thong!\n", COLOR_LOI);
@@ -335,6 +426,13 @@ void QuanLyThuVien::hienThiPhieuMuon() {
     }
     veBangConsole(6, headers, colPercents, flatData, flatColors);
 }
+/************
+* @Description Tao phieu muon sach cho ban doc
+*
+* @return       Void
+* @attention    Tu dong cap nhat tinh trang sach = So phieu muon
+* @attention    Ho tro tao nhanh Ban Doc moi neu Ma Ban Doc khong ton tai
+*********************/
 void QuanLyThuVien::muonSach(){
     string strMaSach;
     string strMaBD;
@@ -440,6 +538,13 @@ void QuanLyThuVien::muonSach(){
     }
     cout << "  " << char(200) << string(15, char(205)) << char(202) << string(36, char(205)) << char(188) << "\n";
 }
+/************
+* @Description Xu ly nghiep vu tra sach dua vao so phieu muon
+*
+* @return       Void
+* @attention    Cap nhat lai tinh trang phieu ve 0, tinh trang sach ve 0
+* @attention    Kiem tra dong bo du lieu giua Phieu va Sach truoc khi huy phieu
+*********************/
 void QuanLyThuVien::traSach(){
     string strSoPhieu;
     int iSoPhieu;
@@ -490,16 +595,12 @@ void QuanLyThuVien::traSach(){
     this->ghiFilePhieuMuon();
     chayWinner("\n  => Tra sach thanh cong!\n", COLOR_CHON);
 }
-void QuanLyThuVien::ghiFileBanDoc() {
-    ofstream fileBanDoc("BanDoc.txt");
-    if (!fileBanDoc) return;
-    for (int i = 0; i < _vecBD.getSize(); ++i) {
-        fileBanDoc << _vecBD[i].getMaBD() << "|"
-                   << _vecBD[i].getHoTen() << "|"
-                   << _vecBD[i].getNgayDK() << endl;
-    }
-    fileBanDoc.close();
-}
+/************
+* @Description Them truc tiep mot ban doc moi vao he thong
+*
+* @return       Void
+* @attention    Kiem tra ma ban doc bi trung de tranh luu de
+*********************/
 void QuanLyThuVien::themBanDoc() {
     string strMa, strTen;
     setColor(COLOR_VIEN); 
