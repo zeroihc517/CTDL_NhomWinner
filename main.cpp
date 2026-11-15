@@ -5,6 +5,12 @@
 #include "Utils.h"
 
 using namespace std;
+/************
+* @Description Ham chinh khoi chay chuong trinh Quan Ly Thu Vien
+*
+* @return       Int (0 khi thoat chuong trinh thanh cong)
+* @attention    Xu ly dang nhap va dieu phuong vong lap menu chinh cua he thong
+*********************/
 int main() {
     SetConsoleOutputCP(437);
     QuanLyThuVien objQl;
