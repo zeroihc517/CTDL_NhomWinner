@@ -167,14 +167,9 @@ LinkedList<string> split(const string& strInput, const char cDelim) {
 * @Description Kiem tra dang nhap tai khoan quan tri admin
 *
 * @return       True neu dang nhap thanh cong, False neu that bai
-* @attention    Tai khoan doc tu file Admin.txt, nhap sai qua 3 lan se thoat
+* @attention    Ho tro nhieu tai khoan trong Admin.txt (moi dong 1 cap user pass), nhap sai qua 3 lan se thoat
 *********************/
 bool dangNhap() {
-    ifstream fAdmin("Admin.txt");
-    string strDbUser = "";
-    string strDbPass = "";
-    fAdmin >> strDbUser >> strDbPass;
-    fAdmin.close();
     int iThu = 0;
     while (iThu < 3) {
         system("cls");
@@ -211,7 +206,18 @@ bool dangNhap() {
                 cout << "*";
             }
         }
-        if (strUser == strDbUser && strPass == strDbPass) {
+        ifstream fAdmin("Admin.txt");
+        string strDbUser = "";
+        string strDbPass = "";
+        bool bHopLe = false;
+        while (fAdmin >> strDbUser >> strDbPass) {
+            if (strUser == strDbUser && strPass == strDbPass) {
+                bHopLe = true;
+                break;
+            }
+        }
+        fAdmin.close();
+        if (bHopLe) {
             chayWinner("\n\n\tDang nhap thanh cong!\n", COLOR_CHON, 15);
             Sleep(500);
             return true;
